@@ -14,6 +14,11 @@
     "streetsidesoftware.code-spell-checker",
     "gruntfuggly.todo-tree",
     "wix.vscode-import-cost",
-    "pflannery.vscode-versionlens"
+    "pflannery.vscode-versionlens",
+    "aaron-bond.better-comments",
+    "naumovs.color-highlight",
+    "yzhang.markdown-all-in-one",
+    "shd101wyy.markdown-preview-enhanced",
+    "ms-vsliveshare.vsliveshare"
   ]
 }

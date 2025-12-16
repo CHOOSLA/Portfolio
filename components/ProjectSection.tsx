@@ -1,0 +1,21 @@
+export default function ProjectSection() {
+  return (
+    // 제일 큰 부분
+    <section className="min-h-screen w-full overflow-hidden bg-black px-6 py-32 md:px-12 lg:px-24">
+      {/* 제목 색션 */}
+      <div className="mx-auto max-w-7xl">
+        <div className="mb-32 text-center">
+          <h2 className="mb-8 text-6xl leading-none font-bold tracking-tight text-white md:text-8xl lg:text-9xl">
+            {/* 그레디언트를 생성하고 Text에 맞게 Clip을 따냄
+                그 다음에 텍스트를 투명하게 만듦 */}
+            <span className="block bg-gradient-to-r from-cyan-400 via-blue-600 to-purple-600 bg-clip-text text-transparent">
+              Featured
+            </span>
+            <span className="mt-4 block text-white/90">Project</span>
+          </h2>
+          <p className="text-lg text-gray-400 md:text-xl">프론트엔드 개발</p>
+        </div>
+      </div>
+    </section>
+  );
+}
