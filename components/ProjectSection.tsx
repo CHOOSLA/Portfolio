@@ -1,8 +1,10 @@
+import { ProjectCard } from "./base/ProjectCard";
+
 export default function ProjectSection() {
   return (
     // 제일 큰 부분
     <section className="min-h-screen w-full overflow-hidden bg-black px-6 py-32 md:px-12 lg:px-24">
-      {/* 제목 색션 */}
+      {/* 전체에 일관된 margin을 넣음 */}
       <div className="mx-auto max-w-7xl">
         <div className="mb-32 text-center">
           <h2 className="mb-8 text-6xl leading-none font-bold tracking-tight text-white md:text-8xl lg:text-9xl">
@@ -21,9 +23,13 @@ export default function ProjectSection() {
           <div className="h-2 w-2 animate-pulse rounded-full bg-white" />
           <div className="h-px w-24 bg-gradient-to-r from-gray-400 to-transparent" />
         </div>
-      </div>
 
-      {/* 프로젝트 카드 섹션 */}
+        {/* 프로젝트 카드 섹션 */}
+        <div>
+          {/* 그레디언트된 카드 */}
+          <ProjectCard />
+        </div>
+      </div>
     </section>
   );
 }
