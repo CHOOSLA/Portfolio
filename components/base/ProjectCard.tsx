@@ -90,7 +90,11 @@ export function ProjectCard() {
           {/* 오른쪽 프로젝트 이미지*/}
           <div className="group/img relative overflow-hidden rounded-xl">
             <div className="absolute inset-0 opacity-50 transition-opacity duration-500 group-hover/img:opacity-70">
-              <img src={"/production.png"} alt="test" />
+              <img
+                src={"/production.png"}
+                alt="test"
+                className="h-full w-full object-cover transition-transform duration-700 group-hover/img:scale-110"
+              />
             </div>
           </div>
         </div>
