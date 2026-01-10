@@ -15,13 +15,16 @@ export default function ProjectSection() {
             </span>
             <span className="mt-4 block text-white/90">Project</span>
           </h2>
-          <p className="text-lg text-gray-400 md:text-xl">프론트엔드 개발</p>
-        </div>
-        {/* 절취선 */}
-        <div className="flex items-center justify-center gap-4">
-          <div className="h-px w-24 bg-gradient-to-r from-transparent to-gray-400" />
-          <div className="h-2 w-2 animate-pulse rounded-full bg-white" />
-          <div className="h-px w-24 bg-gradient-to-r from-gray-400 to-transparent" />
+          <p className="mx-auto mb-8 max-w-2xl text-lg text-gray-400 md:text-xl">
+            프론트엔드 개발
+          </p>
+
+          {/* 절취선 */}
+          <div className="flex items-center justify-center gap-4">
+            <div className="h-px w-24 bg-gradient-to-r from-transparent to-gray-400" />
+            <div className="h-2 w-2 animate-pulse rounded-full bg-white" />
+            <div className="h-px w-24 bg-gradient-to-r from-gray-400 to-transparent" />
+          </div>
         </div>
 
         {/* 프로젝트 카드 섹션 */}
