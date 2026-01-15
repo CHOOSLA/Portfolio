@@ -39,11 +39,7 @@ export function ProjectCard({ project }: { project: Project }) {
             </h3>
 
             <p className="text-base leading-relaxed text-gray-400">
-              Vite와 React, TypeScript를 기반으로 구축된 전사적 자원 관리(ERP)
-              및 생산 관리(MES) 솔루션입니다. FSD(Feature-Sliced Design)
-              아키텍처를 적용하여 프로젝트의 확장성과 유지보수성을 극대화했으며,
-              BOM 관리, 공정 제어, 재고 및 WMS, 인사 관리 등 복잡한 비즈니스
-              도메인을 체계적으로 설계하고 구현했습니다.
+              {project.description}
             </p>
 
             {/* 기술스택과 태그 목록 */}
