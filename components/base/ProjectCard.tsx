@@ -1,9 +1,11 @@
 "use client";
 
+import { Project } from "@/lib/projects";
+
 import { ArrowRightIcon } from "./ArrowRightIcon";
 import { GithubIcon } from "./GithubIcon";
 
-export function ProjectCard() {
+export function ProjectCard({ project }: { project: Project }) {
   const tmp = ["Vite", "React", "TypeScript", "FSD(Feature Sliced Design)"];
 
   return (
@@ -33,7 +35,7 @@ export function ProjectCard() {
             </div>
 
             <h3 className="bg-gradient-to-br from-white to-[#a0a0a0] bg-clip-text text-3xl leading-tight font-bold tracking-tight text-transparent md:text-4xl">
-              Sampoom Management
+              {project.title}
             </h3>
 
             <p className="text-base leading-relaxed text-gray-400">

@@ -1,6 +1,12 @@
+import { Project } from "@/lib/projects";
+
 import { ProjectCard } from "./base/ProjectCard";
 
-export default function ProjectSection() {
+interface ProjectsProps {
+  projects: Project[];
+}
+
+export default function ProjectSection({ projects }: ProjectsProps) {
   return (
     // 제일 큰 부분
     <section className="min-h-screen w-full overflow-hidden bg-black px-6 py-32 md:px-12 lg:px-24">
@@ -30,7 +36,11 @@ export default function ProjectSection() {
         {/* 프로젝트 카드 섹션 */}
         <div>
           {/* 그레디언트된 카드 */}
-          <ProjectCard />
+          {projects.map((project) => {
+            return (
+              <ProjectCard key={project.id.toString()} project={project} />
+            );
+          })}
         </div>
       </div>
     </section>
