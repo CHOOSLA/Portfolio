@@ -6,8 +6,6 @@ import { ArrowRightIcon } from "./ArrowRightIcon";
 import { GithubIcon } from "./GithubIcon";
 
 export function ProjectCard({ project }: { project: Project }) {
-  const tmp = ["Vite", "React", "TypeScript", "FSD(Feature Sliced Design)"];
-
   return (
     <div className="group cursor-pointer">
       <div className="overflow-hidden rounded-3xl border border-indigo-500/20 bg-gradient-to-br from-[#0f0f23]/90 to-[#05050f]/95 backdrop-blur-[20px] transition-all duration-500 hover:scale-[1.02]">
@@ -24,9 +22,9 @@ export function ProjectCard({ project }: { project: Project }) {
                 className="rounded-full px-4 py-1.5 text-xs font-semibold tracking-wider uppercase backdrop-blur-md"
                 // badge 칼라
                 style={{
-                  background: `#06b6d415`,
-                  border: `1px solid #06b6d430`,
-                  color: `#06b6d4`,
+                  background: `${project.accentColor}15`,
+                  border: `1px solid ${project.accentColor}30`,
+                  color: project.accentColor,
                 }}
               >
                 Frontend
@@ -44,7 +42,7 @@ export function ProjectCard({ project }: { project: Project }) {
 
             {/* 기술스택과 태그 목록 */}
             <div className="flex flex-wrap gap-2.5">
-              {tmp.map((tag) => (
+              {project.tech.map((tag) => (
                 <span
                   key={tag}
                   className="rounded-lg border border-white/10 bg-white/5 px-4 py-2 text-xs font-medium text-gray-200 backdrop-blur-md transition-all duration-300 hover:scale-105"
@@ -57,14 +55,14 @@ export function ProjectCard({ project }: { project: Project }) {
             {/* 깃허브 링크 */}
             <div className="flex gap-3 pt-4">
               <a
-                href="https://github.com/cnckd/sampoom-management"
+                href={project.github}
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => {}}
                 className="group/btn relative flex items-center gap-2 overflow-hidden rounded-lg border border-white/10 bg-white/5 px-6 py-3 text-sm font-medium text-white backdrop-blur-md transition-all duration-300 hover:scale-105"
                 style={{
-                  background: `linear-gradient(135deg, #06b6d4 0%, #06b6d4dd 100%)`,
-                  boxShadow: `0 0 20px #06b6d430`,
+                  background: `linear-gradient(135deg, ${project.accentColor} 0%, ${project.accentColor}dd 100%)`,
+                  boxShadow: `0 0 20px ${project.accentColor}30`,
                 }}
               >
                 {/* 여기도 카드와 마찬가지로 hover시에 gradient된 투명한 레이어를 덮어 씌움 */}
@@ -74,7 +72,7 @@ export function ProjectCard({ project }: { project: Project }) {
               </a>
               {/* 사이트 바로 가기 정보 */}
               <a
-                href="www.naver.com"
+                href={project.website}
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => {}}
@@ -87,13 +85,12 @@ export function ProjectCard({ project }: { project: Project }) {
           </div>
           {/* 오른쪽 프로젝트 이미지*/}
           <div className="group/img relative overflow-hidden rounded-xl">
-            <div className="absolute inset-0 opacity-50 transition-opacity duration-500 group-hover/img:opacity-70">
-              <img
-                src={"/production.png"}
-                alt="test"
-                className="h-full w-full object-cover transition-transform duration-700 group-hover/img:scale-110"
-              />
-            </div>
+            <div className="absolute inset-0 opacity-50 transition-opacity duration-500 group-hover/img:opacity-70" />
+            <img
+              src={project.thumbnail}
+              alt="test"
+              className="h-full w-full object-cover transition-transform duration-700 group-hover/img:scale-110"
+            />
           </div>
         </div>
       </div>

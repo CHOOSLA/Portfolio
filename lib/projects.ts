@@ -9,6 +9,11 @@ export interface Project {
   id: Number;
   title: string;
   description: string;
+  accentColor: string;
+  tech: string[];
+  github: string;
+  website: string;
+  thumbnail: string;
 }
 
 export function getAllProjects(): Project[] {
