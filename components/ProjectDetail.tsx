@@ -1,12 +1,18 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 import { Project } from "@/lib/projects";
 
 import { ExternalLinkIcon } from "./base/ExternalLinkIcon";
 import { GithubIcon } from "./base/GithubIcon";
 import { GlobeIcon } from "./base/GlobeIcon";
+import Starfield from "./Starfield";
+
+gsap.registerPlugin(ScrollTrigger);
 
 interface ProjectDetailProps {
   project: Project;
@@ -14,6 +20,8 @@ interface ProjectDetailProps {
 
 export default function ProjectDetail({ project }: ProjectDetailProps) {
   const router = useRouter();
+  const containerRef = useRef<HTMLDivElement>(null);
+
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
     if (element) {
@@ -30,10 +38,29 @@ export default function ProjectDetail({ project }: ProjectDetailProps) {
     }
   };
 
+  // Gsap 애니메이션 적용
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.from(".fade-in-up", {
+        y: 30,
+        opacity: 0,
+        duration: 0.8,
+        stagger: 0.1,
+        ease: "power3.out",
+      });
+    }, containerRef);
+    return () => ctx.revert();
+  }, [project]);
+
   return (
     // selection: bg-cyan-500/30 -> 텍스트를 드래그 했을 때 배경색을 cyan-500/30으로 설정
-    <div className="relative min-h-screen bg-black text-white selection:bg-cyan-500/30">
-      <div className="m-8">
+    <div
+      ref={containerRef}
+      className="relative min-h-screen bg-black text-white selection:bg-cyan-500/30"
+    >
+      <Starfield className="fixed inset-0 h-full w-full" />
+
+      <div className="relative z-20 m-8">
         <button
           onClick={() => router.push("/")}
           className="group flex items-center gap-2 rounded-full px-4 py-2 backdrop-blur-md transition-all duration-300 hover:bg-white/10"
@@ -56,38 +83,50 @@ export default function ProjectDetail({ project }: ProjectDetailProps) {
         </button>{" "}
       </div>
 
-      <main className="relative z-10 mx-auto max-w-[1600px] px-6 pt-4 pb-20 md:px-12 lg:px-16">
-        <header className="mb-20">
-          <div className="mb-6 flex flex-wrap items-center gap-4">
-            {/* 프로젝트 뱃지 */}
+      <main className="relative z-10 mx-auto max-w-[1600px] px-6 pt-10 pb-20 md:px-12 lg:px-16">
+        <header className="fade-in-up relative mb-32 flex flex-col items-center text-center">
+          <div
+            className="absolute top-1/2 left-1/2 -z-10 h-[400px] w-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full blur-[120px] transition-all duration-700"
+            style={{ backgroundColor: `${project.accentColor}15` }}
+          />
+
+          <div className="mb-8 flex flex-wrap items-center justify-center gap-4">
             <span
-              className="rounded-full px-4 py-1.5 text-sm font-bold tracking-wider uppercase backdrop-blur-md"
+              className="flex items-center gap-2 rounded-full border px-5 py-2 text-xs font-bold tracking-[0.15em] uppercase backdrop-blur-md"
               style={{
-                background: `${project.accentColor}15`,
-                border: `1px solid ${project.accentColor}30`,
+                borderColor: `${project.accentColor}30`,
+                backgroundColor: `${project.accentColor}05`,
                 color: project.accentColor,
               }}
             >
+              <span
+                className="h-1.5 w-1.5 animate-pulse rounded-full"
+                style={{ backgroundColor: project.accentColor }}
+              />
               {project.category}
             </span>
 
-            <div className="h-px w-12 bg-white/20" />
-            <span className="font-mono text-gray-400">
-              Proejct {String(project.id).padStart(2, "0")}
+            <span className="font-mono text-sm tracking-widest text-white/40">
+              NO. {String(project.id).padStart(2, "0")}
             </span>
           </div>
 
-          <h1 className="mb-8 text-5xl leading-[1.1] font-bold md:text-7xl lg:text-8xl">
+          <h1
+            className="mb-8 text-6xl font-black tracking-tighter text-white md:text-8xl lg:text-8xl"
+            style={{
+              textShadow: `0 0 50px ${project.accentColor}30`,
+            }}
+          >
             {project.title}
           </h1>
 
-          <p className="max-w-5xl text-lg leading-relaxed text-gray-300 md:text-xl">
+          <p className="max-w-4xl text-lg leading-relaxed font-light text-gray-300 md:text-2xl">
             {project.detailedDescription}
           </p>
         </header>
 
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-12">
-          <aside className="lg:col-span-3">
+          <aside className="fade-in-up lg:col-span-3">
             <div className="sticky top-12 space-y-8">
               {/* 카테고리 영역 */}
               <div className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-2xl">
@@ -192,7 +231,7 @@ export default function ProjectDetail({ project }: ProjectDetailProps) {
               </nav>
             </div>
           </aside>
-          <div className="space-y-24 lg:col-span-9">
+          <div className="fade-in-up space-y-24 lg:col-span-9">
             {/* 프로젝트 설명 페이지 */}
             <section className="group relative overflow-hidden rounded-3xl border border-white/10 bg-white/5">
               <img
@@ -343,6 +382,7 @@ export default function ProjectDetail({ project }: ProjectDetailProps) {
                                   <div className="h-3 w-3 rounded-full bg-[#ff5f56]" />
                                   <div className="h-3 w-3 rounded-full bg-[#ffbd2e]" />
                                   <div className="h-3 w-3 rounded-full bg-[#27c93f]" />
+                                  <div className="h-3 w-3 rounded-full bg-[#35cd4b]" />
                                 </div>
                                 <div className="font-mono text-xs text-gray-500">
                                   Implementation Example
