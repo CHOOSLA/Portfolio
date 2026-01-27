@@ -89,7 +89,7 @@ export default function ProjectSection({ projects }: ProjectsProps) {
     // 제일 큰 부분
     <section
       ref={sectionRef}
-      className="relative min-h-screen w-full overflow-hidden bg-black px-6 pt-32 pb-64 md:px-12 lg:px-24"
+      className="relative min-h-screen w-full overflow-hidden bg-black px-6 py-32 md:px-12 lg:px-24"
     >
       <Starfield
         triggerRef={sectionRef}
@@ -109,7 +109,7 @@ export default function ProjectSection({ projects }: ProjectsProps) {
             {/* 상단 텍스트: 외곽선 효과 (Stroke) */}
             <span
               className="featured-text block text-6xl text-transparent transition-all duration-500 hover:tracking-wide md:text-8xl lg:text-9xl"
-              style={{ WebkitTextStroke: "1px rgba(255,255,255,0.2)" }}
+              style={{ WebkitTextStroke: "1px rgba(255,255,255,0.6)" }}
             >
               FEATURED
             </span>
