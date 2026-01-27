@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -21,6 +21,30 @@ interface ProjectDetailProps {
 export default function ProjectDetail({ project }: ProjectDetailProps) {
   const router = useRouter();
   const containerRef = useRef<HTMLDivElement>(null);
+  const [activeSection, setActiveSection] = useState<string>("");
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveSection(entry.target.id);
+          }
+        });
+      },
+      {
+        rootMargin: "-20% 0px -50% 0px", // 화면의 중앙쯤에 왔을 때 인식
+        threshold: 0.1,
+      }
+    );
+
+    const sections = document.querySelectorAll(
+      "section[id], div[id^='challenge-']"
+    );
+    sections.forEach((section) => observer.observe(section));
+
+    return () => observer.disconnect();
+  }, [project]);
 
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
@@ -129,7 +153,7 @@ export default function ProjectDetail({ project }: ProjectDetailProps) {
           <aside className="fade-in-up lg:col-span-3">
             <div className="sticky top-12 space-y-8">
               {/* 카테고리 영역 */}
-              <div className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-2xl">
+              <div className="rounded-2xl border border-white/10 bg-zinc-900/80 p-6 backdrop-blur-xl">
                 <h3 className="mb-6 text-xs font-bold tracking-widest text-gray-500 uppercase">
                   Project Links
                 </h3>
@@ -168,7 +192,7 @@ export default function ProjectDetail({ project }: ProjectDetailProps) {
               </div>
 
               {/* 기술 스택 영역 */}
-              <div className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-xl">
+              <div className="rounded-2xl border border-white/10 bg-zinc-900/80 p-6 backdrop-blur-xl">
                 <h3 className="mb-6 text-xs font-bold tracking-widest text-gray-500 uppercase">
                   Tech Stack
                 </h3>
@@ -184,12 +208,17 @@ export default function ProjectDetail({ project }: ProjectDetailProps) {
                 </div>
               </div>
 
+              {/* 프로젝트 네비게이션 영역 */}
               <nav className="hidden lg:block">
-                <ul className="space-y-1 border-l border-white/10 pl-4 text-sm">
+                <ul className="space-y-1 pl-4 text-sm">
                   <li>
                     <button
                       onClick={() => scrollToSection("overview")}
-                      className="block py-2 text-left text-gray-400 transition-all hover:translate-x-1 hover:text-white"
+                      className={`block w-full border-l-2 py-2 pl-4 text-left transition-all duration-300 ${
+                        activeSection === "overview"
+                          ? "scale-105 border-white font-bold text-white"
+                          : "border-transparent text-gray-500 hover:text-gray-300"
+                      }`}
                     >
                       01. 프로젝트 개요
                     </button>
@@ -197,7 +226,12 @@ export default function ProjectDetail({ project }: ProjectDetailProps) {
                   <li>
                     <button
                       onClick={() => scrollToSection("technical-decision")}
-                      className="block py-2 text-left text-gray-400 transition-all hover:translate-x-1 hover:text-white"
+                      className={`block w-full border-l-2 py-2 pl-4 text-left transition-all duration-300 ${
+                        activeSection === "technical-decision" ||
+                        activeSection.startsWith("challenge-")
+                          ? "scale-105 border-white font-bold text-white"
+                          : "border-transparent text-gray-500 hover:text-gray-300"
+                      }`}
                     >
                       02. 도전과제 및 해결과정
                     </button>
@@ -210,9 +244,16 @@ export default function ProjectDetail({ project }: ProjectDetailProps) {
                                 e.stopPropagation();
                                 scrollToSection(`challenge-${index}`);
                               }}
-                              className="block text-left text-sm text-gray-500 transition-all hover:translate-x-1 hover:text-gray-300"
+                              className={`block w-full truncate text-left text-sm transition-all duration-300 ${
+                                activeSection === `challenge-${index}`
+                                  ? "scale-105 pl-2 font-medium text-white"
+                                  : "text-gray-500 hover:text-gray-300"
+                              }`}
                             >
-                              문제 {index + 1}
+                              {index + 1}.{" "}
+                              {project.challenges[index].menuTitle ||
+                                project.challenges[index].title ||
+                                `문제 ${index + 1}`}
                             </button>
                           </li>
                         ))}
@@ -222,7 +263,11 @@ export default function ProjectDetail({ project }: ProjectDetailProps) {
                   <li>
                     <button
                       onClick={() => scrollToSection("retrospective")}
-                      className="block py-2 text-left text-gray-400 transition-all hover:translate-x-1 hover:text-white"
+                      className={`block w-full border-l-2 py-2 pl-4 text-left transition-all duration-300 ${
+                        activeSection === "retrospective"
+                          ? "scale-105 border-white font-bold text-white"
+                          : "border-transparent text-gray-500 hover:text-gray-300"
+                      }`}
                     >
                       03. 성과 및 회고
                     </button>
@@ -233,7 +278,7 @@ export default function ProjectDetail({ project }: ProjectDetailProps) {
           </aside>
           <div className="fade-in-up space-y-24 lg:col-span-9">
             {/* 프로젝트 설명 페이지 */}
-            <section className="group relative overflow-hidden rounded-3xl border border-white/10 bg-white/5">
+            <section className="group relative overflow-hidden rounded-3xl border border-white/10 bg-zinc-900/80">
               <img
                 src={project.thumbnail || "/placeholder.svg"}
                 alt={project.title}
@@ -244,7 +289,7 @@ export default function ProjectDetail({ project }: ProjectDetailProps) {
             {/* 프로젝트 개요 영역 */}
             <section id="overview" className="space-y-12">
               <div className="flex items-end gap-4">
-                <span className="font-mono text-5xl leading-none font-bold text-white/10">
+                <span className="font-mono text-5xl leading-none font-bold text-white/80">
                   01
                 </span>
                 <div className="space-y-1">
@@ -270,7 +315,7 @@ export default function ProjectDetail({ project }: ProjectDetailProps) {
                   {project.overview.highlights.map((detail, i) => (
                     <div
                       key={i}
-                      className="relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 p-6 hover:border-white/20 hover:bg-white/10"
+                      className="relative overflow-hidden rounded-2xl border border-white/10 bg-zinc-900/90 p-6 hover:border-white/20 hover:bg-zinc-800/60"
                     >
                       <div className="flex items-start gap-4">
                         <span
@@ -295,7 +340,7 @@ export default function ProjectDetail({ project }: ProjectDetailProps) {
             {/* 문제해결 */}
             <section id="technical-decision" className="space-y-12">
               <div className="flex items-center gap-4">
-                <span className="font-mono text-5xl font-bold text-white/20">
+                <span className="font-mono text-5xl font-bold text-white/80">
                   02
                 </span>
                 <h2 className="text-3xl font-bold">도전과제 및 해결과정</h2>
@@ -308,7 +353,7 @@ export default function ProjectDetail({ project }: ProjectDetailProps) {
                     id={`challenge-${index}`}
                     className="scroll-mt-32 space-y-12"
                   >
-                    <div className="overflow-hidden rounded-3xl border border-white/10 bg-white/5 p-8 md:p-10">
+                    <div className="overflow-hidden rounded-3xl border border-white/10 bg-zinc-900/90 p-8 md:p-10">
                       {/* 1. 문제 정의 (Challenge) */}
                       <div className="relative pb-10">
                         <div className="relative z-10">
@@ -340,7 +385,7 @@ export default function ProjectDetail({ project }: ProjectDetailProps) {
                       </div>
 
                       {/* 2. 해결 과정  */}
-                      <div className="relative overflow-hidden rounded-3xl border border-emerald-500/10 bg-emerald-500/5 p-8 md:p-10">
+                      <div className="relative overflow-hidden rounded-3xl border border-emerald-500/20 bg-zinc-900/80 p-8 md:p-10">
                         <div className="relative z-10">
                           <div className="mb-6 flex items-center gap-3">
                             <div className="rounded-full bg-emerald-500/20 px-3 py-1 text-xs font-bold tracking-widest text-emerald-500 uppercase">
@@ -363,7 +408,7 @@ export default function ProjectDetail({ project }: ProjectDetailProps) {
                             {item.solution.technicalDetails.map((detail, i) => (
                               <div
                                 key={i}
-                                className="rounded-xl border border-white/5 bg-white/5 p-4 transition-colors hover:border-white/20 hover:bg-white/10"
+                                className="rounded-xl border border-white/5 bg-zinc-900/50 p-4 transition-colors hover:border-white/20 hover:bg-zinc-800"
                               >
                                 <div className="mb-2 font-mono text-xs text-gray-400">
                                   KEY FEATURE {String(i + 1).padStart(2, "0")}
@@ -377,7 +422,7 @@ export default function ProjectDetail({ project }: ProjectDetailProps) {
 
                           {item.solution.codeExample && (
                             <div className="overflow-hidden rounded-xl border border-white/10 bg-[#0d1117] shadow-2xl">
-                              <div className="flex items-center justify-between border-b border-white/5 bg-white/5 px-4 py-3">
+                              <div className="flex items-center justify-between border-b border-white/5 bg-zinc-800/50 px-4 py-3">
                                 <div className="flex gap-2">
                                   <div className="h-3 w-3 rounded-full bg-[#ff5f56]" />
                                   <div className="h-3 w-3 rounded-full bg-[#ffbd2e]" />
@@ -407,7 +452,7 @@ export default function ProjectDetail({ project }: ProjectDetailProps) {
             {project.retrospective && (
               <section id="retrospective" className="space-y-12">
                 <div className="flex items-center gap-4">
-                  <span className="font-mono text-5xl font-bold text-white/20">
+                  <span className="font-mono text-5xl font-bold text-white/80">
                     03
                   </span>
                   <h2 className="text-3xl font-bold">회고</h2>
@@ -424,7 +469,7 @@ export default function ProjectDetail({ project }: ProjectDetailProps) {
                     {project.retrospective.description.map((text, i) => (
                       <div
                         key={i}
-                        className="group relative rounded-3xl border border-white/5 bg-white/5 p-8 transition-colors duration-300 hover:border-white/20 hover:bg-white/10"
+                        className="group relative rounded-3xl border border-white/10 bg-zinc-900/80 p-8 transition-colors duration-300 hover:border-white/20 hover:bg-zinc-800"
                       >
                         <div className="flex gap-6">
                           <div className="flex shrink-0 flex-col items-center gap-2">

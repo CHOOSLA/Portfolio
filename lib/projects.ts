@@ -24,6 +24,7 @@ export interface Project {
   };
   challenges: {
     title: string;
+    menuTitle?: string;
     description: string;
     technicalDetails: string[];
     solution: {

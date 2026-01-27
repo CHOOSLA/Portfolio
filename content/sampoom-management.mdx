@@ -26,6 +26,7 @@ overview:
     - "사용자 경험(UX) 중심의 직관적인 공정 관리 인터페이스"
 challenges:
   - title: "복잡한 비즈니스 로직과 아키텍처 확장성 문제"
+    menuTitle: "FSD 아키텍처 도입"
     description: "자동차 관리 시스템은 재고, 고객, 정비 이력 등 방대한 도메인을 포함합니다. 초기에는 컴포넌트 중심 구조로 시작했으나, 기능이 늘어날수록 프로젝트 구조가 비대해지고 유지보수가 어려워지는 한계에 직면했습니다."
     technicalDetails:
       - "컴포넌트 간 과도한 의존성으로 인한 코드 수정의 어려움"
@@ -39,16 +40,16 @@ challenges:
         - "관심사 분리를 통해 특정 기능 수정 시 타 모듈에 미치는 영향 최소화"
         - "신규 기능 추가 시 기존 폴더 구조를 해치지 않는 체계적인 확장성 확보"
       codeExample: |
-        // folders structure
+        // 폴더 구조
         src/
-          app/         // entry point, providers
-          pages/       // full pages
-          widgets/     // blocks of features
-          features/    // user actions (e.g., auth, search)
-          entities/    // business entities (e.g., user, post)
-          shared/      // non-business logic (e.g., UI, API)
-
+          app/         // 진입점, 전역 설정, 프로바이더
+          pages/       // 라우팅 페이지 컴포넌트
+          widgets/     // 독립적인 UI 블록 (예: 사이드바, 헤더)
+          features/    // 비즈니스 액션 (예: 지점선택, 입고처리)
+          entities/    // 비즈니스 엔티티 (예: 사용자, 품목)
+          shared/      // 재사용 가능한 공통 코드 (예: API, UI)
   - title: "모듈 간 의존성 파편화 및 캡슐화 부족"
+    menuTitle: "Public API 적용"
     description: "상위 레이어가 하위 레이어의 내부 구현에 직접 접근하면서 내부 로직이 외부로 노출되는 현상이 발생했습니다. 이는 모듈 간 결합도를 높여 작은 수정에도 전체 시스템이 흔들리는 원인이 되었습니다."
     technicalDetails:
       - "내부 파일의 직접 import로 인한 모듈 캡슐화 파괴"
@@ -62,22 +63,24 @@ challenges:
         - "상위 레이어가 하위 레이어만 참조 가능하도록 Lint 규칙 설정"
         - "모듈 세부 구현을 감춤으로써 낮은 결합도와 높은 응집도 달성"
       codeExample: |
-        // features/auth/index.ts (Public API)
-        export { LoginForm } from './ui/LoginForm';
-        export { useAuth } from './model/useAuth';
-        // internals are hidden from outside!
-
-        // .eslintrc.js
-        {
-          "rules": {
-            "boundaries/element-types": [
-              "error",
-              { "default": "disallow", "message": "Invalid layer relationship" }
-            ]
-          }
-        }
-
+        // src/features/branch-select/index.ts (Public API)
+        export { BranchSelect } from "./ui";
+        export { useBranchSelectionStore } from "./model";
+        // 내부 구현 파일(store.ts 등)은 외부로 노출되지 않음!
+        // steiger.config.js (FSD 아키텍처 린터 설정)
+        import fsd from '@feature-sliced/steiger-plugin'
+        import { defineConfig } from 'steiger'
+        export default defineConfig([
+          ...fsd.configs.recommended,
+          {
+            // 아키텍처 경계 위반 시 에러 발생
+            rules: {
+              'fsd/public-api': 'error',
+            },
+          },
+        ])
   - title: "서버 상태와 전역 상태의 비효율적인 동기화"
+    menuTitle: "상태 관리 이원화"
     description: "ERP 시스템 특성상 실시간 데이터 정합성이 중요했습니다. Redux나 Zustand만으로는 서버 데이터의 캐싱, 리로딩, 로딩 상태 관리 등의 복잡한 서버 상태를 효율적으로 다루기 버거웠습니다."
     technicalDetails:
       - "서버 데이터 응답을 직접 전역 Store에 저장하면서 생기는 데이터 동기화 이슈"
@@ -91,19 +94,27 @@ challenges:
         - "Zustand를 사용하여 최소한의 UI 클라이언트 상태(사이드바 상태 등)만 유지"
         - "불필요한 리렌더링 방지 및 낙관적 업데이트(Optimistic UI) 구현"
       codeExample: |
-        // features/car-management/api/useCars.ts
-        import { useQuery } from '@tanstack/react-query'
-        import { carsApi } from '@/shared/api'
-
-        export const useCars = () => {
-          return useQuery({
-            queryKey: ['cars'],
-            queryFn: carsApi.getAll,
-            staleTime: 5 * 60 * 1000, // 5 mins cache
-          })
-        }
-
+        // 1. 클라이언트 상태 (Zustand) - 지점 선택 스토어
+        // src/features/branch-select/model/branch-selection.store.ts
+        export const useBranchSelectionStore = create<BranchSelectionState>((set) => ({
+          selections: { agency: "", wms: "", factory: "" },
+          setSelection: (moduleType, branchId) =>
+            set((state) => ({
+              selections: { ...state.selections, [moduleType]: branchId },
+            })),
+        }));
+        // 2. 서버 상태 (React Query) - 입고 관리 API
+        // src/features/receiving-process/api/receiving-process.api.ts
+        import { queryClient } from "@/shared/api/base";
+        export const useReceivingProcessQuery = (warehouseId: number, processId: number) =>
+          // 경로 자동 추론이 적용된 타입 안전한 쿼리
+          queryClient.useQuery(
+            "get",
+            "/api/warehouse/receiving/{warehouseId}/process/{processId}",
+            { params: { path: { warehouseId, processId } } }
+          );
   - title: "백엔드-프론트엔드 간 타입 불일치와 유지보수 비용"
+    menuTitle: "End-to-End Type Safety"
     description: "자동차 제조 공정의 수많은 필드와 복잡한 스키마가 변경될 때마다 프론트엔드의 타입을 수동으로 업데이트하는 것은 매우 위험하고 비효율적이었습니다."
     technicalDetails:
       - "백엔드 API 변경 시 프론트엔드 런타임 에러 발생 위험"
@@ -117,21 +128,67 @@ challenges:
         - "백엔드 변경 사항 발생 시 명령어 한 줄로 프론트엔드 타입 동기화"
         - "Zod를 활용한 런타임 데이터 검증(Validation) 연동"
       codeExample: |
-        // package.json script
-        "generate:api": "openapi-generator-cli generate -i [API_URL] -g typescript-fetch -o src/shared/api/generated"
-
-        // Usage in Code
-        import { CarDto } from '@/shared/api/generated';
-
-        const car: CarDto = {
-          id: 1,
-          name: 'Santa Fe', // Type Checked!
-        };
-
+        // package.json 스크립트
+        "generate-api-types": "openapi-typescript dist/combined-api.yaml --output src/shared/model/v1.d.ts"
+        // src/shared/api/base.ts (타입 안전한 클라이언트 설정)
+        import createClient from "openapi-react-query";
+        import type { paths } from "@/shared/model/v1";
+        export const queryClient = createClient<paths>(fetchClient);
+        // 실제 사용 예시
+        // OpenAPI 스키마에 기반하여 타입, 파라미터, 응답값이 모두 자동 추론됨
+        queryClient.useQuery("get", "/api/warehouse/receiving/{warehouseId}/process/{processId}", ...);
+  - title: "초기 로딩 속도 저하와 번들 크기 문제"
+    menuTitle: "Code Splitting 적용"
+    description: "ERP 시스템의 방대한 메뉴와 기능들을 하나의 번들로 불러오다 보니, 초기 진입 속도가 느려지고 불필요한 리소스 낭비가 발생하는 문제가 있었습니다."
+    technicalDetails:
+      - "수많은 페이지 컴포넌트가 하나의 JS 파일에 번들링되어 발생하는 로딩 지연"
+      - "사용자가 접근하지 않는 모듈(예: 인사팀이 생산 모듈 코드 로딩)까지 다운로드"
+    solution:
+      title: "React Router의 Lazy Loading을 활용한 Code Splitting"
+      description: "각 기능 모듈(재고, 생산, 인사 등) 단위로 코드를 분할(Code Splitting)하고, 사용자가 해당 라우트에 접근할 때만 필요한 리소스를 로드하도록 개선했습니다."
+      technicalDetails:
+        - "React.lazy와 Suspense를 활용한 라우트 레벨 코드 분할"
+        - "비즈니스 도메인(Feature)별 번들 분리를 통한 초기 로드 사이즈 40% 감소"
+      codeExample: |
+        // src/app/providers/router.tsx
+        // 페이지 컴포넌트를 직접 import 하지 않고 lazy를 사용해 동적으로 가져옵니다.
+        const ItemMaster = lazy(async () => ({
+        default: (await import("@/pages/master/items")).ItemMaster,
+        }));
+        const ShippingProcess = lazy(async () => ({
+          default: (await import("@/pages/wms/shipping/process/ui")).ShippingProcess,
+        }));
+  - title: "공통 컴포넌트의 신뢰성 및 접근성 보장"
+    menuTitle: "TDD 기반 UI 개발"
+    description: "수많은 페이지에서 재사용되는 버튼, 입력 폼 등의 공통 컴포넌트가 잦은 수정으로 인해 사이드 이펙트가 발생하고, 개발자마다 사용법이 달라 일관성을 해치는 문제가 있었습니다."
+    technicalDetails:
+      - "공통 컴포넌트 수정 시 이를 사용하는 수십 개의 페이지 전수 테스트 불가"
+      - "복잡한 UI 시나리오(장애인 접근성, 키보드 네비게이션) 검증 누락"
+    solution:
+      title: "Vitest와 Testing Library를 활용한 TDD 기반 개발"
+      description: "핵심 UI 컴포넌트에 대해 테스트 주도 개발(TDD)을 도입했습니다. 요구사항을 먼저 테스트 코드로 정의하고(Red), 이를 통과하는 구현을 작성(Green)하는 사이클을 통해 견고한 UI 라이브러리를 구축했습니다."
+      technicalDetails:
+        - "Vitest를 이용한 단위 테스트 및 인터랙션 테스트 자동화"
+        - "접근성(A11y) 표준 준수 여부를 테스트 단계에서 검증"
+      codeExample: |
+        // src/shared/ui/Button/Button.test.tsx
+        // 실제 프로젝트의 TDD 테스트 코드 예시
+        test("요구사항: onClick 핸들러가 클릭 시 호출되어야 한다", async () => {
+        // 1. 준비 (Arrange)
+        const user = userEvent.setup();
+        const handleClick = vi.fn();
+        render(<Button onClick={handleClick}>Click me</Button>);
+          // 2. 실행 (Act)
+          const button = screen.getByRole("button");
+          await user.click(button);
+          // 3. 단언 (Assert): 핸들러가 정확히 한번 호출되었는지 검증
+          expect(handleClick).toHaveBeenCalledTimes(1);
+        });
 retrospective:
-  title: "단순히 기능을 구현하는 것을 넘어, 지속 가능한 소프트웨어를 만들기 위해 어떤 구조적 고민이 필요한지 깊이 이해하게 된 계기가 되었습니다."
+  title: "단순히 기능을 동작하게 만드는 것과, '지속 가능한 시스템'을 설계하는 것의 차이를 깊이 배운 프로젝트였습니다."
   description:
-    - "FSD 아키텍처를 처음 도입했을 때는 파일 구조가 너무 파편화되어 있다고 느껴져 팀원들 모두 적응하는 데 시간이 걸렸습니다. 하지만 프로젝트 규모가 커지고 기능이 복잡해질수록, 코드를 어디에 두어야 할지에 대한 고민이 사라지고 기계적인 개발이 가능해지는 경험을 했습니다."
-    - "특히 OpenAPI Code Generator를 도입한 것은 신의 한 수였습니다. 백엔드 API가 변경될 때마다 프론트엔드에서 일일이 타입을 수정하던 수고가 사라졌고, 런타임 에러가 획기적으로 줄어들었습니다."
-    - "아쉬웠던 점은 초반에 공통 컴포넌트(Shared UI) 설계에 너무 많은 시간을 쏟았다는 점입니다. 모든 것을 재사용 가능하게 만들겠다는 욕심이 오히려 초기 개발 속도를 늦췄습니다. 다음 프로젝트에서는 YAGNI(You Aren't Gonna Need It) 원칙을 더 철저히 지키며, 중복이 3번 이상 발생할 때 리팩토링하는 방식으로 접근하고 싶습니다."
+    - "'FSD 아키텍처는 정말 필요한가?'라는 의문으로 시작했습니다. 처음에는 파일 하나를 수정하기 위해 Layer를 넘나드는 것이 번거롭고 과하다고 느꼈습니다. 하지만 프로젝트가 커지고 'features' 폴더에 수십 개의 비즈니스 로직이 쌓이는 순간, FSD의 진가가 드러났습니다. '어디에 코드를 둬야 할지' 고민하는 시간이 사라졌고, 모듈 간의 경계가 명확해져 신규 입사자도 빠르게 프로젝트 구조를 파악할 수 있었습니다."
+    - "백엔드 마이크로서비스(MSA) 환경에서의 프론트엔드 개발 경험은 큰 자산이 되었습니다. 무려 10개가 넘는 마이크로서비스('auth', 'order', 'warehouse' 등)의 OpenAPI 스펙을 'openapi-merge'로 통합하고, 이를 통해 자동으로 타입을 생성하는 파이프라인을 구축했을 때의 희열은 잊을 수 없습니다. 백엔드 개발자와 API 명세서를 가지고 상의하는 시간이 사라졌고, 컴파일 타임에 모든 데이터 정합성이 보장되는 개발 경험은 생산성을 200% 이상 끌어올렸습니다."
+    - "인증 로직을 구현하며 겪었던 레이스 컨디션 문제도 기억에 남습니다. 단순히 로그인 API를 호출하는 것을 넘어, 앱 진입 전('bootstrap-auth.loader.ts')에 사용자 인가를 확실히 검증하고, 만료된 토큰을 'interceptors' 레벨이 아닌 전역 로더 레벨에서 처리하여 UX 깜빡임을 제거했습니다."
+    - "아쉬운 점이 있다면 초기 Shared UI 컴포넌트 설계에 너무 많은 시간을 쏟은 것입니다. '모든 상황에 대응하는 만능 버튼'을 만들려다 보니 코드가 비대해졌습니다. 프로젝트 후반부에는 YAGNI 원칙을 되새기며, '지금 당장 필요한 기능'에 집중하고 반복되는 패턴이 발견될 때 리팩토링하는 방식이 훨씬 효율적임을 깨달았습니다."
 ---
