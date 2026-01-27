@@ -34,7 +34,7 @@ export default function ProjectSection({ projects }: ProjectsProps) {
         </div>
 
         {/* 프로젝트 카드 섹션 */}
-        <div>
+        <div className="space-y-24">
           {/* 그레디언트된 카드 */}
           {projects.map((project) => {
             return (

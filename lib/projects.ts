@@ -14,6 +14,29 @@ export interface Project {
   github: string;
   website: string;
   thumbnail: string;
+  alt: string;
+  category: string;
+  detailedDescription?: string;
+  overview: {
+    title: string;
+    description: string;
+    highlights: string[];
+  };
+  challenges: {
+    title: string;
+    description: string;
+    technicalDetails: string[];
+    solution: {
+      title: string;
+      description: string;
+      technicalDetails: string[];
+      codeExample?: string;
+    };
+  }[];
+  retrospective: {
+    title: string;
+    description: string[];
+  };
 }
 
 export function getAllProjects(): Project[] {
@@ -44,7 +67,13 @@ export function getAllProjects(): Project[] {
     } as unknown as Project;
   });
 
-  return projectDatas;
+  return projectDatas.sort((a, b) => {
+    if (a.id > b.id) {
+      return 1;
+    } else {
+      return -1;
+    }
+  });
 }
 
 export function getProjectById(id: number): Project | undefined {

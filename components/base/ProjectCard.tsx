@@ -1,13 +1,19 @@
 "use client";
 
+import { useRouter } from "next/navigation";
+
 import { Project } from "@/lib/projects";
 
 import { ArrowRightIcon } from "./ArrowRightIcon";
 import { GithubIcon } from "./GithubIcon";
 
 export function ProjectCard({ project }: { project: Project }) {
+  const router = useRouter();
   return (
-    <div className="group cursor-pointer">
+    <div
+      className="group cursor-pointer"
+      onClick={() => router.push(`/projects/${project.id}`)}
+    >
       <div className="overflow-hidden rounded-3xl border border-indigo-500/20 bg-gradient-to-br from-[#0f0f23]/90 to-[#05050f]/95 backdrop-blur-[20px] transition-all duration-500 hover:scale-[1.02]">
         {/* 호버가 되었을 때 */}
         {/* 부모에 객체에 있는 그레디언트를 자연스럽게 opacity를 이용해서 덮어 씌움 */}
@@ -27,7 +33,7 @@ export function ProjectCard({ project }: { project: Project }) {
                   color: project.accentColor,
                 }}
               >
-                Frontend
+                {project.category}
               </span>
               <span className="text-sm text-gray-600">01</span>
             </div>
@@ -58,7 +64,7 @@ export function ProjectCard({ project }: { project: Project }) {
                 href={project.github}
                 target="_blank"
                 rel="noopener noreferrer"
-                onClick={() => {}}
+                onClick={(e) => e.stopPropagation()}
                 className="group/btn relative flex items-center gap-2 overflow-hidden rounded-lg border border-white/10 bg-white/5 px-6 py-3 text-sm font-medium text-white backdrop-blur-md transition-all duration-300 hover:scale-105"
                 style={{
                   background: `linear-gradient(135deg, ${project.accentColor} 0%, ${project.accentColor}dd 100%)`,
@@ -75,7 +81,7 @@ export function ProjectCard({ project }: { project: Project }) {
                 href={project.website}
                 target="_blank"
                 rel="noopener noreferrer"
-                onClick={() => {}}
+                onClick={(e) => e.stopPropagation()}
                 className="group/btn flex items-center gap-2 rounded-lg border border-white/10 bg-white/5 px-6 py-3 text-sm font-medium backdrop-blur-md transition-all duration-300 hover:scale-105"
               >
                 <span className="relative z-10">Live Site</span>
@@ -88,7 +94,7 @@ export function ProjectCard({ project }: { project: Project }) {
             <div className="absolute inset-0 opacity-50 transition-opacity duration-500 group-hover/img:opacity-70" />
             <img
               src={project.thumbnail}
-              alt="test"
+              alt={project.alt}
               className="h-full w-full object-cover transition-transform duration-700 group-hover/img:scale-110"
             />
           </div>
