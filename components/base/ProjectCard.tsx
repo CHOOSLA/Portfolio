@@ -35,7 +35,9 @@ export function ProjectCard({ project }: { project: Project }) {
               >
                 {project.category}
               </span>
-              <span className="text-sm text-gray-600">01</span>
+              <span className="text-sm text-gray-600">
+                {String(project.id).padStart(2, "0")}
+              </span>
             </div>
 
             <h3 className="bg-gradient-to-br from-white to-[#a0a0a0] bg-clip-text text-3xl leading-tight font-bold tracking-tight text-transparent md:text-4xl">
