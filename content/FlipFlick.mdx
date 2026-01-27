@@ -1,16 +1,94 @@
 ---
 id: 2
-title: "삼품관리 - 자동차 제조 ERP"
-description: "제고,생산,인사 등 7개 핵심 모듈로 구성된 자동차 제조 ERP입니다. FSD 아키텍처를 도입해 복잡한 모듈 간 의존성을 체계적으로 관리하고, OpenAPI Code Generator를 활용해 스키마부터 UI까지 이어지는 End-to-End Type Safety를 확보하는 데 주력했습니다."
-accentColor: "#06b6d4"
-tech:
-  [
-    "React",
-    "TypeScript",
-    "FSD(Feature Sliced Design) ",
-    "OpenAPI Code Generator",
-  ]
-github: "https://github.com/CHOOSLA/Sampoom-Management-Frontend"
-website: "www.samsam.autos"
-thumbnail: "/sampoom.jpeg"
+title: "FlipFlick - 영화 리뷰 및 토론 커뮤니티"
+description: "영화 정보를 탐색하고 리뷰를 작성하며, 심도 있는 토론을 나눌 수 있는 영화 커뮤니티 플랫폼입니다. 초기 디자인 시스템(Base Components) 구축부터 Axios 통신 모듈 설계, 그리고 홈 화면의 핵심 UI 개발을 주도했습니다."
+accentColor: "#E50914"
+tech: ["React", "TypeScript", "Styled Components", "Axios", "Vite"]
+github: "https://github.com/AutoEverFlipFlick/FlipFlick_FE"
+website: ""
+thumbnail: "/flipflick-thumb.jpeg"
+alt: "FlipFlick Project Image"
+category: "FrontEnd"
+detailedDescription: "FlipFlick은 영화 리뷰 및 토론 커뮤니티 플랫폼입니다. 저는 프로젝트의 초기 구조를 잡는 단계부터 참여하여, 재사용 가능한 공통 컴포넌트(Base Design System)를 설계하고, 서버 통신을 위한 Core 모듈을 구축하는 역할을 수행했습니다."
+overview:
+  title: "영화 팬들을 위한 올인원 커뮤니티 플랫폼"
+  description: "단순한 정보 조회를 넘어, 감각적인 UI와 부드러운 인터랙션을 통해 몰입감 있는 사용자 경험을 제공하고자 했습니다. 특히 초기 개발 생산성을 높이기 위한 시스템 구축에 집중했습니다."
+  highlights:
+    - "BaseInput, BaseButton 등 Atomic 단위의 공통 디자인 시스템 컴포넌트 설계"
+    - "Styled Components 테마 및 글로벌 스타일 가이드라인 수립"
+    - "Axios Interceptor 기반의 API 통신 모듈 및 인증 로직 표준화"
+challenges:
+  - title: "일관성 없는 UI 코드와 중복 스타일링 문제"
+    menuTitle: "공통 컴포넌트 표준화"
+    description: "협업 초기, 개발자마다 버튼의 크기나 여백을 제각각으로 설정하여 UI 통일성이 깨지는 문제가 있었습니다. 또한 매번 색상 코드를 하드코딩하는 등 스타일 변경 시 유지보수가 어려웠습니다."
+    technicalDetails:
+      - "Props로 전달받지 않은 임의의 스타일 변경 방지 필요"
+      - "size(sm, md, lg), variant(primary, secondary) 등 표준화된 옵션 정의"
+    solution:
+      title: "Atomic Design 기반의 엄격한 공통 컴포넌트 설계"
+      description: "'BaseButton', 'BaseInput' 등 핵심 UI를 공통 컴포넌트화하고, 사전에 정의된 상태(State)와 사이즈(Variant)만 허용하도록 Props 인터페이스를 설계하여 어떤 개발자가 사용하더라도 디자인 가이드라인을 준수하도록 강제했습니다."
+      technicalDetails:
+        - "Props를 통해 크기, 색상, 스타일을 유연하게 변경 가능한 범용 컴포넌트 구현"
+        - "Styled Components의 'ThemeProvider'를 활용한 중앙 집중식 테마 관리"
+      codeExample: |
+        // src/components/base/BaseButton.tsx
+        // 미리 정의된 variant와 size만 허용하여 UI 일관성 보장
+        export const BaseButton = styled.button<{ 
+          $variant?: 'primary' | 'secondary'; 
+          $size?: 'small' | 'medium' | 'large';
+        }>`
+          /* ...style logic... */
+        `;
+  - title: "신규 개발자의 컴포넌트 학습 비용과 사용 미숙"
+    menuTitle: "인터랙티브 가이드 (ExamplePage)"
+    description: "공통 컴포넌트를 만들어도, 신규 입사한 팀원들이 해당 컴포넌트의 존재를 모르거나 정확한 사용법(Props 조합)을 파악하지 못해 중복 코드를 작성하는 비효율이 발생했습니다."
+    technicalDetails:
+      - "정적인 문서(Wiki)는 코드 변경 사항을 즉시 반영하지 못함"
+      - "컴포넌트의 다양한 상태(Loading, Disabled 등)를 한눈에 파악하기 어려움"
+    solution:
+      title: "개발자 온보딩을 위한 인터랙티브 컴포넌트 갤러리 구축"
+      description: "'ExamplePage'를 별도로 개발하여 모든 공통 컴포넌트의 실제 렌더링 모습과 사용 예시 코드를 한곳에서 시각적으로 확인할 수 있는 페이지를 제공했습니다. 이를 통해 신규 개발자가 프로젝트를 빠르게 이해하고 적응할 수 있도록 도왔습니다."
+      technicalDetails:
+        - "Prop 조합에 따른 렌더링 결과와 코드를 보여주는 'ExamplePage' 구현"
+        - "개발자가 문서를 찾지 않고도 직관적으로 사용법을 익힐 수 있는 DX(Developer Experience) 개선"
+      codeExample: |
+        // src/pages/example/ExamplePage.tsx
+        // 신규 개발자가 BaseButton 사용법을 바로 확인할 수 있는 가이드
+        <GuideSection>
+          <SectionTitle>사용 가이드 (Copy & Paste)</SectionTitle>
+          <GuideList>
+            <li>• {'<BaseButton variant="blue" size="large" />'}</li>
+            <li>• {'<BaseButton variant="green" loading={isLoading} />'}</li>
+          </GuideList>
+        </GuideSection>
+  - title: "반복적인 API 호출 설정과 토큰 관리의 번거로움"
+    menuTitle: "API 통신 표준화"
+    description: "모든 API 요청마다 Base URL을 명시하고, Authorization 헤더에 토큰을 수동으로 넣어주는 과정이 반복되면서 실수가 잦아졌습니다."
+    technicalDetails:
+      - "API 요청 시마다 토큰 유무 확인 로직 중복"
+      - "환경 변수(API URL) 관리의 어려움"
+      - "응답 에러(401, 500)에 대한 통일된 처리 부재"
+    solution:
+      title: "Axios Instance 및 Interceptor 중앙화"
+      description: "'axiosInstance'를 생성하여 환경 변수 설정을 일원화하고, Interceptor를 통해 모든 요청에 토큰을 자동 주입하며 응답 에러를 전역에서 핸들링하는 구조를 짰습니다."
+      technicalDetails:
+        - "Request Interceptor: 로컬 스토리지의 토큰 자동 주입"
+        - "Response Interceptor: 토큰 만료 시 자동 로그아웃 처리 등 에러 핸들링"
+      codeExample: |
+        // src/services/axiosInstance.ts
+        const axiosInstance = axios.create({
+          baseURL: import.meta.env.VITE_API_URL,
+          timeout: 5000,
+        });
+        axiosInstance.interceptors.request.use((config) => {
+          const token = localStorage.getItem("accessToken");
+          if (token) config.headers.Authorization = `Bearer ${token}`;
+          return config;
+        });
+retrospective:
+  title: "탄탄한 기초가 개발 생산성을 좌우한다는 것을 깨달았습니다."
+  description:
+    - "초기에 시간을 들여 베이스 컴포넌트와 테마 시스템을 구축해 둔 덕분에, 프로젝트 중반 이후 팀원들이 UI를 개발하는 속도가 비약적으로 빨라지는 것을 목격했습니다. 제약을 두는 것이 오히려 자유로운 개발을 돕는다는 디자인 시스템의 철학을 몸소 체험했습니다."
+    - "단순히 기능을 구현하는 것을 넘어, 'Axios' 설정이나 폴더 구조 같은 '개발 환경'을 세팅하는 것이 팀 전체의 코드 퀄리티에 얼마나 큰 영향을 미치는지 배웠습니다. 초기 아키텍처 설계의 중요성을 깊이 인식하게 된 계기였습니다."
+    - "다시 프로젝트를 한다면, 컴포넌트의 재사용성을 높이는 것뿐만 아니라 Storybook과 같은 도구를 도입하여 팀원들이 컴포넌트 사용법을 더 쉽게 익힐 수 있도록 문서화까지 챙기고 싶습니다."
 ---
