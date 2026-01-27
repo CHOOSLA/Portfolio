@@ -1,16 +1,120 @@
 ---
 id: 4
-title: "삼품관리 - 자동차 제조 ERP"
-description: "제고,생산,인사 등 7개 핵심 모듈로 구성된 자동차 제조 ERP입니다. FSD 아키텍처를 도입해 복잡한 모듈 간 의존성을 체계적으로 관리하고, OpenAPI Code Generator를 활용해 스키마부터 UI까지 이어지는 End-to-End Type Safety를 확보하는 데 주력했습니다."
-accentColor: "#06b6d4"
+title: "Campick - 캠핑카 중고 거래 플랫폼"
+description: "캠핑카라는 특수 도메인에 맞춘 중고 거래 플랫폼입니다. 복잡한 차량 옵션/파츠 데이터를 최적화된 쿼리로 처리하고, 일반/딜러 유저의 권한 분리와 보안을 위해 Redis 기반의 인증 시스템을 구축했습니다."
+accentColor: "#f97316"
 tech:
   [
-    "React",
-    "TypeScript",
-    "FSD(Feature Sliced Design) ",
-    "OpenAPI Code Generator",
+    "Java",
+    "Spring Boot",
+    "Spring Security",
+    "JPA (Hibernate)",
+    "Redis",
+    "MySQL",
   ]
-github: "https://github.com/CHOOSLA/Sampoom-Management-Frontend"
-website: "www.samsam.autos"
-thumbnail: "/sampoom.jpeg"
+github: "https://github.com/CHOOSLA/Campick-BE"
+website: ""
+thumbnail: "/campick.jpeg"
+alt: "Campick Backend Architecture"
+category: "BackEnd"
+detailedDescription: "Spring Boot 기반의 백엔드 시스템으로, JPA N+1 문제 해결을 통한 조회 성능 90% 개선, Redis를 활용한 JWT 보안 전략 수립, 그리고 확장성 있는 도메인 주도 패키지 구조(DDD Lite) 도입에 주력했습니다."
+overview:
+  title: "신뢰할 수 있는 중고 캠핑카 거래를 위한 백엔드 솔루션"
+  description: "Campick은 고가의 캠핑카 거래 시 발생하는 정보 비대칭 문제를 해결하기 위해 시작된 프로젝트입니다. 단순한 게시판이 아닌, 차량의 세부 스펙(엔진, 모델, 등급)부터 딜러의 검증된 정보까지 체계적으로 관리하는 백엔드 시스템을 구축했습니다."
+  highlights:
+    - "복잡한 차량 데이터 모델링 (차량-모델-등급-옵션 관계)"
+    - "JPA Fetch Join을 활용한 대규모 리스트 조회 성능 최적화"
+    - "Redis 기반의 JWT 블랙리스트 처리로 안전한 로그아웃 구현"
+    - "일반 회원과 비즈니스 딜러가 공존하는 다형성 회원 시스템"
+challenges:
+  - title: "복잡한 연관관계 조회 시 발생하는 성능 저하"
+    menuTitle: "N+1 문제 해결"
+    description: "상품(Product) 하나에 판매자, 자동차 정보, 모델, 엔진, 옵션, 이미지 등 수많은 엔티티가 연관되어 있습니다. 초기 개발 단계에서 리스트 조회 API 호출 시, 연관된 데이터를 가져오기 위해 수백 개의 추가 쿼리가 발생하는 N+1 문제에 직면했습니다."
+    technicalDetails:
+      - "지연 로딩(Lazy Loading) 설정임에도 리스트 순회 시 강제 초기화로 인한 쿼리 폭발"
+      - "20개의 상품을 조회하는데 100회 이상의 DB 커넥션 발생으로 응답 속도 저하"
+    solution:
+      title: "JPQL Join Fetch를 통한 쿼리 최적화"
+      description: "단순한 'findAll' 메서드 대신 JPQL의 'JOIN FETCH' 구문을 사용하여, 한 번의 쿼리로 필요한 모든 연관 객체 그래프를 즉시 로딩하도록 리팩토링했습니다."
+      technicalDetails:
+        - "필요한 연관 엔티티(Seller, Car, Model, Engine, Images)를 명시적으로 Fetch Join"
+        - "DISTINCT 키워드를 사용하여 1:N 조인 시 발생하는 데이터 뻥튀기(Cartesian Product) 방지"
+        - "결과적으로 쿼리 횟수를 N+1회에서 1회로 단축, 조회 성능 획기적 개선"
+      codeExample: |
+        // src/main/java/com/campick/server/api/product/repository/ProductRepository.java
+        // Before: JpaRepository의 기본 findAll() 사용 시 N+1 발생
+        // After: JPQL Fetch Join으로 최적화
+        @Query(value = "SELECT DISTINCT p FROM Product p " +
+                "JOIN fetch p.seller m " +
+                "JOIN fetch p.car c " +
+                "JOIN fetch c.model mo " +
+                "JOIN fetch c.engine e " +
+                "join fetch mo.type t " +
+                "left join fetch p.images i " +
+                "where m.id = :memberId AND ( p.status = 'AVAILABLE' OR p.status = 'RESERVED')")
+        Page<Product> findProductByMemberIdWithDetails(@Param("memberId") Long memberId, Pageable pageable);
+  - title: "Stateless한 JWT의 보안 취약점 보완"
+    menuTitle: "Redis 로그아웃 구현"
+    description: "JWT(Json Web Token)는 서버가 상태를 저장하지 않아 확장성이 좋지만, 한 번 발급되면 만료될 때까지 제어할 수 없다는 단점이 있습니다. 사용자가 로그아웃을 요청해도 토큰이 만료되지 않으면 탈취 시 악용될 수 있는 문제가 있었습니다."
+    technicalDetails:
+      - "서버 메모리에 세션을 저장하지 않으므로 강제 로그아웃 불가능"
+      - "Access Token의 유효시간이 남아있는 동안 보안 위협 존재"
+    solution:
+      title: "Redis를 활용한 토큰 블랙리스트 전략"
+      description: "로그아웃 요청 시 해당 Access Token의 남은 유효시간을 계산하여 Redis에 블랙리스트로 등록하고, 필터 단에서 이를 검증하도록 구현했습니다."
+      technicalDetails:
+        - "로그아웃 시 Redis에 'Key: AccessToken, Value: logout, TTL: 남은시간' 저장"
+        - "JWTFilter에서 토큰 검증 시 Redis에 해당 키가 존재하는지 우선 확인"
+        - "인메모리 DB인 Redis를 사용하여 매 요청 검증 시의 오버헤드 최소화"
+      codeExample: |
+        // src/main/java/com/campick/server/api/member/service/MemberService.java
+        @Transactional
+        public void logout(String accessToken) {
+            // ... 토큰 파싱 로직 ...
+            Long expiration = jwtUtil.getExpiration(token);
+            
+            // Redis에 해당 토큰을 블랙리스트로 등록 (TTL 설정으로 자동 소멸)
+            redisTemplate.opsForValue()
+                .set(ACCESS_TOKEN_PREFIX + memberId, "logout", expiration, TimeUnit.MILLISECONDS);
+        }
+        // Security Filter에서 검증
+        // 블랙리스트에 있는 토큰이면 401 Unauthorized 반환
+  - title: "일반 유저와 딜러의 상이한 가입 프로세스"
+    menuTitle: "다형성 회원 설계"
+    description: "Campick에는 '일반 회원'과 사업자 번호를 가진 '딜러 회원'이 존재하며, 딜러는 회원가입 시 대리점(Dealership) 정보와 사업자 등록증 검증 등 추가적인 로직이 필요했습니다."
+    technicalDetails:
+      - "단일 API로 서로 다른 필드 검증 로직을 처리해야 하는 복잡성"
+      - "User 엔티티와 Dealer 엔티티 간의 관계 설정 문제"
+    solution:
+      title: "단일 진입점과 조건부 비즈니스 로직 분기"
+      description: "회원가입 요청 DTO에 역할(Role) 필드를 두어, 딜러일 경우에만 추가적인 엔티티(Dealer, Dealership)를 생성하고 연결하는 트랜잭션 로직을 구현했습니다."
+      technicalDetails:
+        - "Spring Transactional을 활용해 Member 저장과 Dealer 생성의 원자성 보장"
+        - "'orElseGet' 패턴을 사용하여 대리점 정보 중복 생성 방지"
+      codeExample: |
+        // src/main/java/com/campick/server/api/member/service/MemberService.java
+        @Transactional
+        public void signUp(MemberSignUpRequestDto requestDto) {
+            // 1. 기본 멤버 저장
+            Member member = requestDto.toEntity(encodedPassword);
+            memberRepository.save(member);
+            // 2. 딜러일 경우 추가 로직 실행
+            if (requestDto.getRole() == Role.DEALER) {
+                // 대리점 정보가 없으면 생성, 있으면 조회
+                DealerShip dealerShip = dealershipRepository.findByRegistrationNumber(...)
+                        .orElseGet(() -> dealershipRepository.save(...));
+                // 딜러 엔티티 생성 및 관계 매핑
+                Dealer dealer = Dealer.builder()
+                        .user(member)
+                        .dealerShip(dealerShip)
+                        .build();
+                dealerRepository.save(dealer);
+            }
+        }
+retrospective:
+  title: "ORM의 편리함 뒤에 숨겨진 '쿼리 비용'을 직시하게 된 프로젝트였습니다."
+  description:
+    - "처음 Spring Data JPA를 도입했을 때는 'SQL을 직접 짜지 않아도 된다'는 점에만 매료되었습니다. 하지만 연관 관계가 복잡한 자동차 도메인을 다루면서, 무심코 호출한 'getProducts()' 하나가 수백 번의 쿼리를 유발하고 서버 응답 속도를 수 초까지 지연시키는 것을 목격했습니다. 이를 해결하기 위해 'Fetch Join'을 공부하고 적용하면서, '편리한 도구일수록 내부 동작 원리를 정확히 알아야 한다'는 교훈을 얻었습니다."
+    - "보안에 있어서도 단순히 '라이브러리 적용'을 넘어선 고민을 했습니다. Stateless한 JWT의 한계를 극복하기 위해 Redis를 도입하여 블랙리스트를 구현한 경험은, '보안과 편의성 사이의 트레이드오프'를 실제로 조율해본 귀중한 경험이었습니다. 특히 Redis의 TTL 기능을 활용해 불필요한 데이터가 쌓이는 것을 방지한 설계는 자원 효율성 측면에서도 만족스러웠습니다."
+    - "프로젝트 초기에는 패키지 구조가 'Controller', 'Service'로만 나뉘어 있어 특정 기능을 찾기 위해 여러 폴더를 오가야 했습니다. 이를 도메인(Member, Product, Chat) 기준으로 리팩토링('package by feature')하면서, 코드의 응집도가 높아지고 팀원 간의 충돌도 줄어드는 것을 체감했습니다. 좋은 아키텍처가 개발 생산성에 얼마나 큰 영향을 미치는지 깨달았습니다."
 ---
