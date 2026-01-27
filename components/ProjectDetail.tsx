@@ -427,7 +427,6 @@ export default function ProjectDetail({ project }: ProjectDetailProps) {
                                   <div className="h-3 w-3 rounded-full bg-[#ff5f56]" />
                                   <div className="h-3 w-3 rounded-full bg-[#ffbd2e]" />
                                   <div className="h-3 w-3 rounded-full bg-[#27c93f]" />
-                                  <div className="h-3 w-3 rounded-full bg-[#35cd4b]" />
                                 </div>
                                 <div className="font-mono text-xs text-gray-500">
                                   Implementation Example

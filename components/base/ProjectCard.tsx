@@ -77,16 +77,18 @@ export function ProjectCard({ project }: { project: Project }) {
                 <span className="relative z-10">GitHub</span>
               </a>
               {/* 사이트 바로 가기 정보 */}
-              <a
-                href={project.website}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={(e) => e.stopPropagation()}
-                className="group/btn flex items-center gap-2 rounded-lg border border-white/10 bg-white/5 px-6 py-3 text-sm font-medium backdrop-blur-md transition-all duration-300 hover:scale-105"
-              >
-                <span className="relative z-10">Live Site</span>
-                <ArrowRightIcon className="relative z-10 h-4 w-4 transition-transform group-hover/btn:translate-x-1" />
-              </a>
+              {project.website && (
+                <a
+                  href={project.website}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={(e) => e.stopPropagation()}
+                  className="group/btn flex items-center gap-2 rounded-lg border border-white/10 bg-white/5 px-6 py-3 text-sm font-medium backdrop-blur-md transition-all duration-300 hover:scale-105"
+                >
+                  <span className="relative z-10">Live Site</span>
+                  <ArrowRightIcon className="relative z-10 h-4 w-4 transition-transform group-hover/btn:translate-x-1" />
+                </a>
+              )}
             </div>
           </div>
           {/* 오른쪽 프로젝트 이미지*/}
