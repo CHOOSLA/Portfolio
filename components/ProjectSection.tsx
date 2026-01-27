@@ -108,7 +108,7 @@ export default function ProjectSection({ projects }: ProjectsProps) {
           >
             {/* 상단 텍스트: 외곽선 효과 (Stroke) */}
             <span
-              className="featured-text block text-6xl text-transparent transition-all duration-500 hover:tracking-wide md:text-8xl lg:text-9xl"
+              className="featured-text block text-6xl text-transparent hover:tracking-wide md:text-8xl lg:text-9xl"
               style={{ WebkitTextStroke: "1px rgba(255,255,255,0.6)" }}
             >
               FEATURED
