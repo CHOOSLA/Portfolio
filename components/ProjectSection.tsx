@@ -89,7 +89,7 @@ export default function ProjectSection({ projects }: ProjectsProps) {
     // 제일 큰 부분
     <section
       ref={sectionRef}
-      className="relative min-h-screen w-full overflow-hidden bg-black px-6 py-32 md:px-12 lg:px-24"
+      className="relative min-h-screen w-full overflow-hidden bg-black px-6 py-32 pb-24 md:px-12 lg:px-24"
     >
       <Starfield
         triggerRef={sectionRef}

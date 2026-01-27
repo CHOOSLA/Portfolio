@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 
 import "@/styles/global.css";
 
+import Footer from "@/components/Footer";
+
 export const metadata: Metadata = {
   title: "About ChooChangWoo",
   description: "ChooChangWoo's Portfolio Website",
@@ -34,7 +36,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="bg-black text-white">{children}</body>
+      <body className="bg-black text-white">
+        {children}
+        <Footer />
+      </body>
     </html>
   );
 }

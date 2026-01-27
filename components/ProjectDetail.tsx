@@ -107,7 +107,7 @@ export default function ProjectDetail({ project }: ProjectDetailProps) {
         </button>{" "}
       </div>
 
-      <main className="relative z-10 mx-auto max-w-[1600px] px-6 pt-10 pb-64 md:px-12 lg:px-16">
+      <main className="relative z-10 mx-auto max-w-[1600px] px-6 pt-10 pb-32 md:px-12 lg:px-16">
         <header className="fade-in-up relative mb-32 flex flex-col items-center text-center">
           <div
             className="absolute top-1/2 left-1/2 -z-10 h-[400px] w-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full blur-[120px] transition-all duration-700"
