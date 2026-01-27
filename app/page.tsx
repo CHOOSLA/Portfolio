@@ -8,7 +8,7 @@ export default function Home() {
   return (
     <>
       <HeroSection />
-      <ProjectSection projects={projects.slice(0, 1)} />
+      <ProjectSection projects={projects} />
     </>
   );
 }

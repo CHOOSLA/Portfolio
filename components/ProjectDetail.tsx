@@ -1,5 +1,7 @@
 "use client";
 
+import { useRouter } from "next/navigation";
+
 import { Project } from "@/lib/projects";
 
 import { ExternalLinkIcon } from "./base/ExternalLinkIcon";
@@ -11,10 +13,11 @@ interface ProjectDetailProps {
 }
 
 export default function ProjectDetail({ project }: ProjectDetailProps) {
+  const router = useRouter();
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
     if (element) {
-      const offset = 80;
+      const offset = 30;
       const bodyRect = document.body.getBoundingClientRect().top;
       const elementRect = element.getBoundingClientRect().top;
       const elementPosition = elementRect - bodyRect;
@@ -30,7 +33,30 @@ export default function ProjectDetail({ project }: ProjectDetailProps) {
   return (
     // selection: bg-cyan-500/30 -> 텍스트를 드래그 했을 때 배경색을 cyan-500/30으로 설정
     <div className="relative min-h-screen bg-black text-white selection:bg-cyan-500/30">
-      <main className="relative z-10 mx-auto max-w-[1600px] px-6 pt-32 pb-20 md:px-12 lg:px-16">
+      <div className="m-8">
+        <button
+          onClick={() => router.push("/")}
+          className="group flex items-center gap-2 rounded-full px-4 py-2 backdrop-blur-md transition-all duration-300 hover:bg-white/10"
+          style={{ border: "1px solid rgba(255,255,255,0.1)" }}
+        >
+          <svg
+            className="h-5 w-5 transition-transform group-hover:-translate-x-1"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M15 19l-7-7 7-7"
+            />
+          </svg>
+          <span className="text-sm font-medium">Back to Home</span>
+        </button>{" "}
+      </div>
+
+      <main className="relative z-10 mx-auto max-w-[1600px] px-6 pt-4 pb-20 md:px-12 lg:px-16">
         <header className="mb-20">
           <div className="mb-6 flex flex-wrap items-center gap-4">
             {/* 프로젝트 뱃지 */}
