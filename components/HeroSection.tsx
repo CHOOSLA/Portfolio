@@ -7,7 +7,7 @@ const Particles = dynamic(() => import("./Particles"), { ssr: false });
 export default function HeroSection() {
   return (
     <div className="relative h-screen w-full">
-      <div className="absolute flex min-h-screen w-full items-center justify-center bg-transparent">
+      <div className="absolute z-10 flex min-h-screen w-full items-center justify-center bg-transparent">
         <div className="flex flex-col items-center gap-12">
           <span className="text-4xl">Portfolio</span>
           <div className="flex flex-col items-center gap-4">
