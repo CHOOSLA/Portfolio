@@ -1,6 +1,8 @@
 "use client";
 
-import Particles from "./Particles";
+import dynamic from "next/dynamic";
+
+const Particles = dynamic(() => import("./Particles"), { ssr: false });
 
 export default function HeroSection() {
   return (

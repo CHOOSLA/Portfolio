@@ -1,13 +1,19 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import dynamic from "next/dynamic";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 import { Project } from "@/lib/projects";
 
 import { ProjectCard } from "./base/ProjectCard";
-import Starfield from "./Starfield";
+
+// Next의 있는 지연 로딩 기법중 하나인 dynamic
+// 공식 문서: https://nextjs.org/docs/app/building-your-application/optimizing/lazy-loading#nextdynamic
+// ssr: false 옵션을 사용해서 서버 사이드 렌더링을 끈다.
+// 클라이언트 사이드에서만 컴포넌트를 로드하여 초기 로딩 지연을 감소시킨다
+const Starfield = dynamic(() => import("./Starfield"), { ssr: false });
 
 gsap.registerPlugin(ScrollTrigger);
 

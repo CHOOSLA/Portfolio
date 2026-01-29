@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { gsap } from "gsap";
@@ -13,7 +14,8 @@ import { Project } from "@/lib/projects";
 import { ExternalLinkIcon } from "./base/ExternalLinkIcon";
 import { GithubIcon } from "./base/GithubIcon";
 import { GlobeIcon } from "./base/GlobeIcon";
-import Starfield from "./Starfield";
+
+const Starfield = dynamic(() => import("./Starfield"), { ssr: false });
 
 gsap.registerPlugin(ScrollTrigger);
 
