@@ -7,13 +7,13 @@ import Footer from "@/components/Footer";
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.about-changwoo.me"),
   title: {
-    default: "추창우 포트폴리오 :: CCW Portfolio",
+    default: "추창우 포트폴리오 :: CCW's Portfolio",
     template: "%s | 추창우",
   },
   description:
     "추창우 포트폴리오 웹사이트입니다. 기술을 도구로서 사용하는 본질을 탐구하는 개발자입니다.",
   generator: "Next.js",
-  applicationName: "추창우 포트폴리오 :: CCW Portfolio",
+  applicationName: "추창우 포트폴리오 :: CCW's Portfolio",
   keywords: [
     "ChooChangWoo",
     "Portfolio",
@@ -46,13 +46,13 @@ export const metadata: Metadata = {
     type: "website",
     locale: "ko_KR",
     url: "https://www.about-changwoo.me",
-    title: "추창우 포트폴리오 :: CCW Portfolio",
+    title: "추창우 포트폴리오 :: CCW's Portfolio",
     description:
       "추창우 포트폴리오 웹사이트입니다. 기술을 도구로서 사용하는 본질을 탐구하는 개발자입니다.",
     siteName: "ChooChangWoo Portfolio",
     images: [
       {
-        url: "/og-image.png",
+        url: "/og-image.jpeg",
         width: 1200,
         height: 630,
         alt: "ChooChangWoo Portfolio",
@@ -61,10 +61,10 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "추창우 포트폴리오 :: CCW Portfolio",
+    title: "추창우 포트폴리오 :: CCW's Portfolio",
     description:
       "추창우 포트폴리오 웹사이트입니다. 기술을 도구로서 사용하는 본질을 탐구하는 개발자입니다.",
-    images: ["/og-image.png"],
+    images: ["/og-image.jpeg"],
   },
   alternates: {
     canonical: "https://www.about-changwoo.me",
