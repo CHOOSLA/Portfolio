@@ -4,6 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 
 import { Project } from "@/lib/projects";
 
@@ -432,11 +434,22 @@ export default function ProjectDetail({ project }: ProjectDetailProps) {
                                   Implementation Example
                                 </div>
                               </div>
-                              <pre className="scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent overflow-x-auto p-6">
-                                <code className="font-mono text-sm leading-relaxed text-gray-300">
-                                  {item.solution.codeExample}
-                                </code>
-                              </pre>
+                              <SyntaxHighlighter
+                                language={
+                                  item.solution.codeLanguage || "typescript"
+                                }
+                                style={vscDarkPlus}
+                                customStyle={{
+                                  margin: 0,
+                                  padding: "1.5rem",
+                                  backgroundColor: "transparent",
+                                  fontSize: "0.875rem",
+                                  lineHeight: "1.625",
+                                }}
+                                wrapLongLines={true}
+                              >
+                                {item.solution.codeExample}
+                              </SyntaxHighlighter>
                             </div>
                           )}
                         </div>

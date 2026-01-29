@@ -32,6 +32,7 @@ export interface Project {
       description: string;
       technicalDetails: string[];
       codeExample?: string;
+      codeLanguage?: string;
     };
   }[];
   retrospective: {
