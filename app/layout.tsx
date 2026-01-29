@@ -69,6 +69,9 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "https://www.about-changwoo.me",
   },
+  icons: {
+    icon: "/favicon.svg",
+  },
 };
 
 export default function RootLayout({
