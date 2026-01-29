@@ -5,14 +5,15 @@ import "@/styles/global.css";
 import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://www.about-changwoo.com"),
+  metadataBase: new URL("https://www.about-changwoo.me"),
   title: {
-    default: "About ChooChangWoo",
-    template: "%s | ChooChangWoo",
+    default: "추창우 포트폴리오 :: CCW Portfolio",
+    template: "%s | 추창우",
   },
-  description: "ChooChangWoo's Portfolio Website",
+  description:
+    "추창우 포트폴리오 웹사이트입니다. 기술을 도구로서 사용하는 본질을 탐구하는 개발자입니다.",
   generator: "Next.js",
-  applicationName: "ChooChangWoo Portfolio",
+  applicationName: "추창우 포트폴리오 :: CCW Portfolio",
   keywords: [
     "ChooChangWoo",
     "Portfolio",
@@ -29,6 +30,9 @@ export const metadata: Metadata = {
     "프론트엔드 개발자",
     "ChooChangWoo Logo",
     "Frontend Developer",
+    "개발자 포트폴리오",
+    "포트폴리오",
+    "프론트엔드 포트폴리오",
   ],
   authors: [{ name: "ChooChangWoo", url: "https://github.com/choosla" }],
   creator: "CHOOSLA",
@@ -41,10 +45,10 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "ko_KR",
-    url: "https://www.about-changwoo.com",
-    title: "About ChooChangWoo",
+    url: "https://www.about-changwoo.me",
+    title: "추창우 포트폴리오 :: CCW Portfolio",
     description:
-      "ChooChangWoo's Portfolio Website. Explore creative frontend projects and backend solutions.",
+      "추창우 포트폴리오 웹사이트입니다. 기술을 도구로서 사용하는 본질을 탐구하는 개발자입니다.",
     siteName: "ChooChangWoo Portfolio",
     images: [
       {
@@ -57,12 +61,13 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "About ChooChangWoo",
-    description: "ChooChangWoo's Portfolio Website",
+    title: "추창우 포트폴리오 :: CCW Portfolio",
+    description:
+      "추창우 포트폴리오 웹사이트입니다. 기술을 도구로서 사용하는 본질을 탐구하는 개발자입니다.",
     images: ["/og-image.png"],
   },
   alternates: {
-    canonical: "https://www.about-changwoo.com",
+    canonical: "https://www.about-changwoo.me",
   },
 };
 
