@@ -95,7 +95,7 @@ export function ProjectCard({ project }: { project: Project }) {
             </div>
           </div>
           {/* 오른쪽 프로젝트 이미지*/}
-          <div className="group/img relative overflow-hidden rounded-xl">
+          <div className="group/img relative aspect-video overflow-hidden rounded-xl md:aspect-auto">
             <div className="absolute inset-0 opacity-50 transition-opacity duration-500 group-hover/img:opacity-70" />
             <Image
               src={project.thumbnail}

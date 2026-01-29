@@ -81,7 +81,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="bg-black text-white">
+      <body className="overflow-x-hidden bg-black text-white">
         {children}
         <Footer />
       </body>

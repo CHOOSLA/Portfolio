@@ -89,7 +89,7 @@ export default function ProjectDetail({ project }: ProjectDetailProps) {
     >
       <Starfield className="fixed inset-0 h-full w-full" />
 
-      <div className="relative z-20 m-8">
+      <div className="relative z-20 m-4 md:m-8">
         <button
           onClick={() => router.push("/")}
           className="group flex items-center gap-2 rounded-full px-4 py-2 backdrop-blur-md transition-all duration-300 hover:bg-white/10"
@@ -112,10 +112,10 @@ export default function ProjectDetail({ project }: ProjectDetailProps) {
         </button>{" "}
       </div>
 
-      <main className="relative z-10 mx-auto max-w-[1600px] px-6 pt-10 pb-32 md:px-12 lg:px-16">
-        <header className="fade-in-up relative mb-32 flex flex-col items-center text-center">
+      <main className="relative z-10 mx-auto max-w-[1600px] px-4 pt-10 pb-20 md:px-12 md:pb-32 lg:px-16">
+        <header className="fade-in-up relative mb-20 flex flex-col items-center text-center md:mb-32">
           <div
-            className="absolute top-1/2 left-1/2 -z-10 h-[400px] w-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full blur-[120px] transition-all duration-700"
+            className="absolute top-1/2 left-1/2 -z-10 h-[300px] w-[300px] -translate-x-1/2 -translate-y-1/2 rounded-full blur-[80px] transition-all duration-700 md:h-[400px] md:w-[600px] md:blur-[120px]"
             style={{ backgroundColor: `${project.accentColor}15` }}
           />
 
@@ -141,7 +141,7 @@ export default function ProjectDetail({ project }: ProjectDetailProps) {
           </div>
 
           <h1
-            className="mb-8 text-6xl font-black tracking-tighter text-white md:text-8xl lg:text-8xl"
+            className="mb-8 text-4xl font-black tracking-tighter text-white md:text-6xl lg:text-8xl"
             style={{
               textShadow: `0 0 50px ${project.accentColor}30`,
             }}
@@ -149,13 +149,13 @@ export default function ProjectDetail({ project }: ProjectDetailProps) {
             {project.title}
           </h1>
 
-          <p className="max-w-4xl text-lg leading-relaxed font-light text-gray-300 md:text-2xl">
+          <p className="max-w-4xl text-base leading-relaxed font-light text-gray-300 md:text-xl lg:text-2xl">
             {project.detailedDescription}
           </p>
         </header>
 
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-12">
-          <aside className="fade-in-up lg:col-span-3">
+          <aside className="fade-in-up order-2 lg:order-1 lg:col-span-3">
             <div className="sticky top-12 space-y-8">
               {/* 카테고리 영역 */}
               <div className="rounded-2xl border border-white/10 bg-zinc-900/80 p-6 backdrop-blur-xl">
@@ -281,7 +281,7 @@ export default function ProjectDetail({ project }: ProjectDetailProps) {
               </nav>
             </div>
           </aside>
-          <div className="fade-in-up space-y-24 lg:col-span-9">
+          <div className="fade-in-up order-1 space-y-16 lg:order-2 lg:col-span-9 lg:space-y-24">
             {/* 프로젝트 설명 페이지 */}
             <section className="group relative overflow-hidden rounded-3xl border border-white/10 bg-zinc-900/80">
               <Image
@@ -297,11 +297,11 @@ export default function ProjectDetail({ project }: ProjectDetailProps) {
             {/* 프로젝트 개요 영역 */}
             <section id="overview" className="space-y-12">
               <div className="flex items-end gap-4">
-                <span className="font-mono text-5xl leading-none font-bold text-white/80">
+                <span className="font-mono text-3xl leading-none font-bold text-white/80 md:text-5xl">
                   01
                 </span>
                 <div className="space-y-1">
-                  <h2 className="text-4xl font-bold tracking-tight">
+                  <h2 className="text-2xl font-bold tracking-tight md:text-4xl">
                     프로젝트 개요
                   </h2>
                 </div>
@@ -310,10 +310,10 @@ export default function ProjectDetail({ project }: ProjectDetailProps) {
               <div className="grid grid-cols-1 gap-12 lg:grid-cols-12">
                 {/* 왼쪽: 제목 및 설명 */}
                 <div className="lg:col-span-12">
-                  <h3 className="mb-6 text-2xl font-bold text-white md:text-3xl">
+                  <h3 className="mb-6 text-xl font-bold text-white md:text-3xl">
                     {project.overview.title}
                   </h3>
-                  <p className="max-w-4xl text-lg leading-relaxed text-gray-400 md:text-xl">
+                  <p className="max-w-4xl text-base leading-relaxed text-gray-400 md:text-xl">
                     {project.overview.description}
                   </p>
                 </div>
@@ -323,7 +323,7 @@ export default function ProjectDetail({ project }: ProjectDetailProps) {
                   {project.overview.highlights.map((detail, i) => (
                     <div
                       key={i}
-                      className="relative overflow-hidden rounded-2xl border border-white/10 bg-zinc-900/90 p-6 hover:border-white/20 hover:bg-zinc-800/60"
+                      className="relative overflow-hidden rounded-none border-0 bg-black/50 p-4 backdrop-blur-md md:rounded-2xl md:border md:border-white/10 md:bg-zinc-900/90 md:p-6 md:hover:border-white/20 md:hover:bg-zinc-800/60"
                     >
                       <div className="flex items-start gap-4">
                         <span
@@ -348,10 +348,12 @@ export default function ProjectDetail({ project }: ProjectDetailProps) {
             {/* 문제해결 */}
             <section id="technical-decision" className="space-y-12">
               <div className="flex items-center gap-4">
-                <span className="font-mono text-5xl font-bold text-white/80">
+                <span className="font-mono text-3xl font-bold text-white/80 md:text-5xl">
                   02
                 </span>
-                <h2 className="text-3xl font-bold">도전과제 및 해결과정</h2>
+                <h2 className="text-2xl font-bold md:text-3xl">
+                  도전과제 및 해결과정
+                </h2>
               </div>
 
               <div className="space-y-12">
@@ -361,11 +363,11 @@ export default function ProjectDetail({ project }: ProjectDetailProps) {
                     id={`challenge-${index}`}
                     className="scroll-mt-32 space-y-12"
                   >
-                    <div className="overflow-hidden rounded-3xl border border-white/10 bg-zinc-900/90 p-8 md:p-10">
+                    <div className="overflow-hidden rounded-none border-0 bg-black/50 p-4 backdrop-blur-md md:overflow-hidden md:rounded-3xl md:border md:border-white/10 md:bg-zinc-900/90 md:p-10">
                       {/* 1. 문제 정의 (Challenge) */}
                       <div className="relative pb-10">
                         <div className="relative z-10">
-                          <div className="mb-6 flex items-center gap-3">
+                          <div className="mb-6 flex flex-col items-start gap-3 md:flex-row md:items-center">
                             <div className="rounded-full bg-red-500/20 px-3 py-1 text-xs font-bold tracking-widest text-red-500 uppercase">
                               Problem{" "}
                               {project.challenges &&
@@ -378,7 +380,7 @@ export default function ProjectDetail({ project }: ProjectDetailProps) {
                             </h3>
                           </div>
 
-                          <p className="mb-8 text-lg leading-relaxed text-gray-300">
+                          <p className="mb-8 text-base leading-relaxed text-gray-300 md:text-lg">
                             {item.description}
                           </p>
 
@@ -393,9 +395,9 @@ export default function ProjectDetail({ project }: ProjectDetailProps) {
                       </div>
 
                       {/* 2. 해결 과정  */}
-                      <div className="relative overflow-hidden rounded-3xl border border-emerald-500/20 bg-zinc-900/80 p-8 md:p-10">
+                      <div className="relative overflow-hidden rounded-none border-0 bg-black/50 p-4 backdrop-blur-md md:overflow-hidden md:rounded-3xl md:border md:border-emerald-500/20 md:bg-zinc-900/80 md:p-10">
                         <div className="relative z-10">
-                          <div className="mb-6 flex items-center gap-3">
+                          <div className="mb-6 flex flex-col items-start gap-3 md:flex-row md:items-center">
                             <div className="rounded-full bg-emerald-500/20 px-3 py-1 text-xs font-bold tracking-widest text-emerald-500 uppercase">
                               Solution{" "}
                               {project.challenges &&
@@ -408,7 +410,7 @@ export default function ProjectDetail({ project }: ProjectDetailProps) {
                             </h3>
                           </div>
 
-                          <p className="mb-8 text-lg leading-relaxed text-gray-300">
+                          <p className="mb-8 text-base leading-relaxed text-gray-300 md:text-lg">
                             {item.solution.description}
                           </p>
 
@@ -429,7 +431,7 @@ export default function ProjectDetail({ project }: ProjectDetailProps) {
                           </div>
 
                           {item.solution.codeExample && (
-                            <div className="overflow-hidden rounded-xl border border-white/10 bg-[#0d1117] shadow-2xl">
+                            <div className="w-full max-w-[calc(100vw-5rem)] overflow-hidden rounded-xl border border-white/10 bg-[#0d1117] shadow-2xl md:max-w-none">
                               <div className="flex items-center justify-between border-b border-white/5 bg-zinc-800/50 px-4 py-3">
                                 <div className="flex gap-2">
                                   <div className="h-3 w-3 rounded-full bg-[#ff5f56]" />
@@ -451,6 +453,7 @@ export default function ProjectDetail({ project }: ProjectDetailProps) {
                                   backgroundColor: "transparent",
                                   fontSize: "0.875rem",
                                   lineHeight: "1.625",
+                                  overflowX: "auto",
                                 }}
                                 wrapLongLines={true}
                               >
@@ -470,10 +473,10 @@ export default function ProjectDetail({ project }: ProjectDetailProps) {
             {project.retrospective && (
               <section id="retrospective" className="space-y-12">
                 <div className="flex items-center gap-4">
-                  <span className="font-mono text-5xl font-bold text-white/80">
+                  <span className="font-mono text-3xl font-bold text-white/80 md:text-5xl">
                     03
                   </span>
-                  <h2 className="text-3xl font-bold">회고</h2>
+                  <h2 className="text-2xl font-bold md:text-3xl">회고</h2>
                 </div>
 
                 <div className="mb-6 flex items-start gap-4">
@@ -487,7 +490,7 @@ export default function ProjectDetail({ project }: ProjectDetailProps) {
                     {project.retrospective.description.map((text, i) => (
                       <div
                         key={i}
-                        className="group relative rounded-3xl border border-white/10 bg-zinc-900/80 p-8 transition-colors duration-300 hover:border-white/20 hover:bg-zinc-800"
+                        className="group relative overflow-hidden rounded-none border-0 bg-black/50 p-4 backdrop-blur-md transition-colors duration-300 hover:bg-black/60 md:overflow-hidden md:rounded-3xl md:border md:border-white/10 md:bg-zinc-900/80 md:p-8 md:hover:border-white/20 md:hover:bg-zinc-800"
                       >
                         <div className="flex gap-6">
                           <div className="flex shrink-0 flex-col items-center gap-2">
