@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -281,10 +282,13 @@ export default function ProjectDetail({ project }: ProjectDetailProps) {
           <div className="fade-in-up space-y-24 lg:col-span-9">
             {/* 프로젝트 설명 페이지 */}
             <section className="group relative overflow-hidden rounded-3xl border border-white/10 bg-zinc-900/80">
-              <img
+              <Image
                 src={project.thumbnail || "/placeholder.svg"}
                 alt={project.title}
+                width={1200}
+                height={800}
                 className="h-auto w-full transform object-cover transition-transform duration-700 group-hover:scale-105"
+                sizes="(max-width: 1024px) 100vw, 1200px"
               />
             </section>
 
