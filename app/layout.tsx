@@ -15,6 +15,11 @@ export const metadata: Metadata = {
   generator: "Next.js",
   applicationName: "추창우 포트폴리오 :: CCW's Portfolio",
   keywords: [
+    "추창우",
+    "추창우 포트폴리오",
+    "프론트엔드 개발자",
+    "웹 개발자",
+    "개발자 포트폴리오",
     "ChooChangWoo",
     "Portfolio",
     "Web Developer",
@@ -24,13 +29,8 @@ export const metadata: Metadata = {
     "TypeScript",
     "JavaScript",
     "Creative Developer",
-    "추창우",
-    "추창우 포트폴리오",
-    "웹 개발자",
-    "프론트엔드 개발자",
     "ChooChangWoo Logo",
     "Frontend Developer",
-    "개발자 포트폴리오",
     "포트폴리오",
     "프론트엔드 포트폴리오",
   ],
@@ -80,7 +80,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="ko">
       <body className="overflow-x-hidden bg-black text-white">
         {children}
         <Footer />
