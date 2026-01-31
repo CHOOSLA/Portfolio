@@ -188,7 +188,7 @@ export default function ProjectDetail({ project }: ProjectDetailProps) {
                         style={{ color: project.accentColor }}
                       >
                         <GlobeIcon className="h-5 w-5" />
-                        Live Demo
+                        사이트 방문
                       </span>
                       <ExternalLinkIcon className="h-4 w-4 text-gray-500 transition-colors group-hover:text-white" />
                     </a>
