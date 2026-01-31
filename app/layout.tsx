@@ -82,7 +82,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="ko">
+    // suppressHydationWarning : SSR에서 서버에서 렌더링된 HTML을 클라이언트가 재사용할떄 경고문구
+    <html lang="ko" suppressHydrationWarning>
       <body className="overflow-x-hidden bg-black text-white">
         {children}
         <Footer />
