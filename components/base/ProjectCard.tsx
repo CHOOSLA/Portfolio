@@ -44,8 +44,8 @@ export function ProjectCard({ project }: { project: Project }) {
               </div>
 
               {/* 모바일용 자세히 보기 */}
-              <div className="flex items-center gap-1 text-xs font-medium text-indigo-400 opacity-80 md:hidden">
-                <span>상세 보기</span>
+              <div className="text-md flex items-center gap-1 font-medium text-indigo-400 opacity-80 md:hidden">
+                <span>클릭하여 상세보기</span>
                 <ArrowRightIcon className="h-3 w-3" />
               </div>
             </div>
