@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://www.about-changwoo.me"),
   title: {
     default: "추창우 포트폴리오 :: CCW's Portfolio",
-    template: "%s | 추창우",
+    template: "%s | 추창우 포트폴리오",
   },
   description:
     "추창우 포트폴리오 웹사이트입니다. 기술을 도구로서 사용하는 본질을 탐구하는 개발자입니다.",
@@ -70,9 +70,12 @@ export const metadata: Metadata = {
     canonical: "https://www.about-changwoo.me",
   },
   icons: {
-    icon: "/favicon.png",
-    shortcut: "/favicon.png",
-    apple: "/favicon.png",
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/icon.png", type: "image/png", sizes: "512x512" },
+    ],
+    shortcut: "/favicon.ico",
+    apple: { url: "/apple-icon.png", type: "image/png", sizes: "180x180" },
   },
 };
 
